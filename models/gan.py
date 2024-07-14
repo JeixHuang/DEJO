@@ -3,36 +3,37 @@ import torch.nn as nn
 import torch.optim as optim
 
 class Generator(nn.Module):
-    def __init__(self):
+    def __init__(self, input_dim, hidden_dim=512, output_dim=768):
         super(Generator, self).__init__()
         self.main = nn.Sequential(
-            nn.Linear(768, 512),
+            nn.Linear(input_dim, hidden_dim),
             nn.ReLU(True),
-            nn.Linear(512, 768),
+            nn.Linear(hidden_dim, output_dim),
         )
 
     def forward(self, x):
         return self.main(x)
 
 class Discriminator(nn.Module):
-    def __init__(self):
+    def __init__(self, input_dim, hidden_dim=512):
         super(Discriminator, self).__init__()
         self.main = nn.Sequential(
-            nn.Linear(768, 512),
+            nn.Linear(input_dim, hidden_dim),
             nn.ReLU(True),
-            nn.Linear(512, 1),
+            nn.Linear(hidden_dim, 1),
             nn.Sigmoid(),
         )
 
     def forward(self, x):
         return self.main(x)
 
-def train_gan(A, B, num_epochs=1000, learning_rate=0.001):
+def train_gan(A, B, num_epochs=100, learning_rate=0.001):
+    input_dim = A.shape[1]
+    G = Generator(input_dim=input_dim, output_dim=input_dim)
+    D = Discriminator(input_dim=input_dim)
+
     A_tensor = torch.tensor(A, dtype=torch.float32)
     B_tensor = torch.tensor(B, dtype=torch.float32)
-
-    G = Generator()
-    D = Discriminator()
 
     criterion = nn.BCELoss()
     optimizer_G = optim.Adam(G.parameters(), lr=learning_rate)
@@ -41,7 +42,7 @@ def train_gan(A, B, num_epochs=1000, learning_rate=0.001):
     for epoch in range(num_epochs):
         # Train Discriminator
         optimizer_D.zero_grad()
-        real_labels = torch.ones(A_tensor.size(0), 1)
+        real_labels = torch.ones(B_tensor.size(0), 1)
         fake_labels = torch.zeros(A_tensor.size(0), 1)
 
         outputs = D(B_tensor)
@@ -64,7 +65,7 @@ def train_gan(A, B, num_epochs=1000, learning_rate=0.001):
         g_loss.backward()
         optimizer_G.step()
 
-        if (epoch + 1) % 100 == 0:
+        if (epoch + 1) % 10 == 0:
             print(f'Epoch [{epoch + 1}/{num_epochs}], D Loss: {d_loss.item():.4f}, G Loss: {g_loss.item():.4f}')
     
     return G

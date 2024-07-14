@@ -10,7 +10,7 @@ class LinearTransform(nn.Module):
     def forward(self, x):
         return self.linear(x)
 
-def train_linear_transform(A, B, num_epochs=1000, learning_rate=0.01):
+def train_linear_transform(A, B, num_epochs=100, learning_rate=0.01):
     A_tensor = torch.tensor(A, dtype=torch.float32)
     B_tensor = torch.tensor(B, dtype=torch.float32)
 
@@ -25,7 +25,7 @@ def train_linear_transform(A, B, num_epochs=1000, learning_rate=0.01):
         loss.backward()
         optimizer.step()
 
-        if (epoch + 1) % 100 == 0:
+        if (epoch + 1) % 10 == 0:
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
     
     return model
