@@ -37,3 +37,4 @@ dependencies:
   - typing-extensions
   - openai
   - nltk
+  - scikit-learn
