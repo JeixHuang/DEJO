@@ -8,7 +8,7 @@ Clone the source code from GitHub:
 
 ```bash
 git clone https://github.com/JeixHuang/DEJO.git
-cd BlackDAN
+cd DEJO
 ```
 
 **Native Runner:** Setup a conda environment using [`conda`](https://github.com/conda/conda) / [`mamba`](https://github.com/mamba-org/mamba):
