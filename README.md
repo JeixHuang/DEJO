@@ -1,4 +1,4 @@
-<h1 align="center">DEJO: Multimodal Higher-Refusal Strategies for Directed Embedding-based Jailbreak Optimization</h1>
+<h1 align="center">DEJO: Multimodal Controllable Strategy for Directed Embedding-based Jailbreak Optimization</h1>
 
 
 
