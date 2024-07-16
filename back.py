@@ -49,7 +49,7 @@ for layer in range(num_layers):
             reduced_embeddings = method.fit_transform(all_embeddings)
 
         # Print the shape of reduced embeddings for debugging
-        print(f"{method_name} reduced_embeddings shape:", reduced_embeddings.shape)
+        # print(f"{method_name} reduced_embeddings shape:", reduced_embeddings.shape)
 
         # Prepare data for plotting
         labels = ['Positive Original', 'Negative Original', 'Common Component']

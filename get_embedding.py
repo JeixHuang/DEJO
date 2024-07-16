@@ -72,58 +72,58 @@ print(f'A saved with shape: {embeddings_po.shape}')
 print(f'B saved with shape: {embeddings_ne.shape}')
 print(f'Common components saved with shape: {common_components.shape}')
 
-# 针对每一层分别进行处理
-num_layers = embeddings_po.shape[1]
-similarity_linear_list = []
-similarity_gan_list = []
-harmfulness_linear_list = []
-harmfulness_gan_list = []
+# # 针对每一层分别进行处理
+# num_layers = embeddings_po.shape[1]
+# similarity_linear_list = []
+# similarity_gan_list = []
+# harmfulness_linear_list = []
+# harmfulness_gan_list = []
 
-for layer in range(num_layers):
-    embeddings_po_layer = embeddings_po[:, layer, :]
-    embeddings_ne_layer = embeddings_ne[:, layer, :]
+# for layer in range(num_layers):
+#     embeddings_po_layer = embeddings_po[:, layer, :]
+#     embeddings_ne_layer = embeddings_ne[:, layer, :]
 
-    # Train linear transformation model
-    linear_model = train_linear_transform(embeddings_po_layer, embeddings_ne_layer)
+#     # Train linear transformation model
+#     linear_model = train_linear_transform(embeddings_po_layer, embeddings_ne_layer)
 
-    # Generate transformed embeddings using the linear model
-    A_tensor = torch.tensor(embeddings_po_layer, dtype=torch.float32)
-    B_pred_linear = linear_model(A_tensor).detach().numpy()
+#     # Generate transformed embeddings using the linear model
+#     A_tensor = torch.tensor(embeddings_po_layer, dtype=torch.float32)
+#     B_pred_linear = linear_model(A_tensor).detach().numpy()
 
-    # Train GAN model
-    gan_generator = train_gan(embeddings_po_layer, embeddings_ne_layer)
+#     # Train GAN model
+#     gan_generator = train_gan(embeddings_po_layer, embeddings_ne_layer)
 
-    # Generate embeddings using the GAN model
-    B_pred_gan = gan_generator(A_tensor).detach().numpy()
+#     # Generate embeddings using the GAN model
+#     B_pred_gan = gan_generator(A_tensor).detach().numpy()
 
-    # Evaluate similarity
-    similarity_linear = evaluate_similarity(B_pred_linear, embeddings_ne_layer)
-    similarity_gan = evaluate_similarity(B_pred_gan, embeddings_ne_layer)
-    print(f'Linear Model Average Similarity for Layer {layer}: {similarity_linear:.4f}')
-    print(f'GAN Model Average Similarity for Layer {layer}: {similarity_gan:.4f}')
+#     # Evaluate similarity
+#     similarity_linear = evaluate_similarity(B_pred_linear, embeddings_ne_layer)
+#     similarity_gan = evaluate_similarity(B_pred_gan, embeddings_ne_layer)
+#     print(f'Linear Model Average Similarity for Layer {layer}: {similarity_linear:.4f}')
+#     print(f'GAN Model Average Similarity for Layer {layer}: {similarity_gan:.4f}')
 
-    # Store similarity results
-    similarity_linear_list.append(similarity_linear)
-    similarity_gan_list.append(similarity_gan)
+#     # Store similarity results
+#     similarity_linear_list.append(similarity_linear)
+#     similarity_gan_list.append(similarity_gan)
 
-    # Evaluate harmfulness (placeholder model for harmfulness evaluation)
-    class HarmfulnessModel:
-        def predict(self, vectors):
-            # Placeholder harmfulness scores
-            return np.random.rand(len(vectors))
+#     # Evaluate harmfulness (placeholder model for harmfulness evaluation)
+#     class HarmfulnessModel:
+#         def predict(self, vectors):
+#             # Placeholder harmfulness scores
+#             return np.random.rand(len(vectors))
 
-    harmfulness_model = HarmfulnessModel()
-    harmfulness_linear = evaluate_harmfulness(B_pred_linear, harmfulness_model)
-    harmfulness_gan = evaluate_harmfulness(B_pred_gan, harmfulness_model)
-    print(f'Linear Model Average Harmfulness for Layer {layer}: {harmfulness_linear:.4f}')
-    print(f'GAN Model Average Harmfulness for Layer {layer}: {harmfulness_gan:.4f}')
+#     harmfulness_model = HarmfulnessModel()
+#     harmfulness_linear = evaluate_harmfulness(B_pred_linear, harmfulness_model)
+#     harmfulness_gan = evaluate_harmfulness(B_pred_gan, harmfulness_model)
+#     print(f'Linear Model Average Harmfulness for Layer {layer}: {harmfulness_linear:.4f}')
+#     print(f'GAN Model Average Harmfulness for Layer {layer}: {harmfulness_gan:.4f}')
 
-    # Store harmfulness results
-    harmfulness_linear_list.append(harmfulness_linear)
-    harmfulness_gan_list.append(harmfulness_gan)
+#     # Store harmfulness results
+#     harmfulness_linear_list.append(harmfulness_linear)
+#     harmfulness_gan_list.append(harmfulness_gan)
 
-# Print overall results
-print('Overall Linear Model Similarity per Layer:', similarity_linear_list)
-print('Overall GAN Model Similarity per Layer:', similarity_gan_list)
-print('Overall Linear Model Harmfulness per Layer:', harmfulness_linear_list)
-print('Overall GAN Model Harmfulness per Layer:', harmfulness_gan_list)
+# # Print overall results
+# print('Overall Linear Model Similarity per Layer:', similarity_linear_list)
+# print('Overall GAN Model Similarity per Layer:', similarity_gan_list)
+# print('Overall Linear Model Harmfulness per Layer:', harmfulness_linear_list)
+# print('Overall GAN Model Harmfulness per Layer:', harmfulness_gan_list)
